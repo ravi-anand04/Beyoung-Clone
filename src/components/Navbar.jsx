@@ -7,13 +7,19 @@ import { Button, Dropdown } from "flowbite-react";
 import Input from "./Input";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
   const [searchBar, setSearchBar] = useState(false);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetchCategories();
+    setIsLoggedIn(!!localStorage.getItem("beyoung_token"));
   }, []);
 
   const fetchCategories = async () => {
@@ -28,6 +34,10 @@ const Navbar = () => {
     setCategories(data.data);
   };
 
+  const toggleSearchBar = () => {
+    setSearchBar((prev) => !prev);
+  };
+
   const [openLoginModal, setLoginModal] = useState(false);
   const [openRegisterModal, setRegisterModal] = useState(false);
 
@@ -39,51 +49,77 @@ const Navbar = () => {
     setRegisterModal((prev) => !prev);
   };
 
+  const redirectToCart = () => {
+    navigate("/checkout");
+  };
+
   return (
-    <div className="sticky top-0">
+    <div className="sticky top-0 shadow-xl z-10">
       <div className="nav-top flex justify-between py-1 text-white bg-black px-48">
         <div className="">
           <a>TRACK YOUR ORDER</a>
         </div>
         <div>
-          <span className="cursor-pointer" onClick={() => setLoginModal(true)}>
-            LOG IN{" "}
-          </span>{" "}
-          |
-          <Login
-            openLoginModal={openLoginModal}
-            toggleLoginModel={toggleLoginModel}
-          />
-          <span
-            className="cursor-pointer"
-            onClick={() => setRegisterModal(true)}
-          >
-            {" "}
-            SIGNUP
-          </span>
-          <Register
-            openRegisterModal={openRegisterModal}
-            toggleRegisterModel={toggleRegisterModel}
-          />
+          {isLoggedIn ? (
+            <>
+              <span className="cursor-pointer">MY ACCOUNT | </span>
+              <span
+                className="cursor-pointer"
+                onClick={() => {
+                  localStorage.removeItem("beyoung_token");
+                  window.location.reload();
+                }}
+              >
+                LOGOUT{" "}
+              </span>
+            </>
+          ) : (
+            <>
+              <span
+                className="cursor-pointer"
+                onClick={() => setLoginModal(true)}
+              >
+                LOG IN |
+              </span>
+
+              <Login
+                openLoginModal={openLoginModal}
+                toggleLoginModel={toggleLoginModel}
+              />
+              <span
+                className="cursor-pointer"
+                onClick={() => setRegisterModal(true)}
+              >
+                {" "}
+                SIGNUP
+              </span>
+              <Register
+                openRegisterModal={openRegisterModal}
+                toggleRegisterModel={toggleRegisterModel}
+              />
+            </>
+          )}
         </div>
       </div>
       <div className="nav-bottom flex bg-white justify-between px-48 py-3">
         <ul className="flex items-center gap-12">
-          <BeyoungLogo />
+          <li className="cursor-pointer" onClick={() => navigate("/")}>
+            <BeyoungLogo />
+          </li>
 
           <li>
             <Dropdown label="MEN" dismissOnClick={false}>
               {categories.length > 0 &&
-                categories.map((category) => (
-                  <Dropdown.Item>{category}</Dropdown.Item>
+                categories.map((category, index) => (
+                  <Dropdown.Item key={index}>{category}</Dropdown.Item>
                 ))}
             </Dropdown>
           </li>
           <li>
             <Dropdown label="WOMEN" dismissOnClick={false}>
               {categories.length > 0 &&
-                categories.map((category) => (
-                  <Dropdown.Item>{category}</Dropdown.Item>
+                categories.map((category, index) => (
+                  <Dropdown.Item key={index}>{category}</Dropdown.Item>
                 ))}
             </Dropdown>
           </li>
@@ -99,7 +135,7 @@ const Navbar = () => {
           <div className="wishlist cursor-pointer">
             <IoIosHeartEmpty size={22} />
           </div>
-          <div className="cart cursor-pointer">
+          <div className="cart cursor-pointer" onClick={redirectToCart}>
             <AiOutlineShoppingCart size={22} />
           </div>
         </div>
@@ -110,6 +146,7 @@ const Navbar = () => {
             className="px-4 w-64"
             placeholder="Search entire store here..."
             type="text"
+            toggleSearchBar={toggleSearchBar}
           />
         )}
       </div>

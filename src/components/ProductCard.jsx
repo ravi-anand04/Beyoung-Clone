@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import placeholder_img from "../assets/images/placeholder-image-square.jpg";
 
 const ProductCard = ({ product }) => {
   const {
@@ -15,7 +16,21 @@ const ProductCard = ({ product }) => {
     displayImage,
     ratings,
     sellerTag,
+    images
   } = product;
+
+  // useEffect(() => {
+  //   const imageCheck = async () => {
+  //     const res = await fetch(displayImage);
+  //     const resJSON = await res.json();
+
+  //     if (resJSON === "Not Found") {
+  //       displayImage = `https://placehold.co/600x400?text=Image+Not+Found`;
+  //     }
+  //   };
+
+  //   imageCheck();
+  // }, []);
 
   const navigate = useNavigate();
 
@@ -25,19 +40,20 @@ const ProductCard = ({ product }) => {
 
   return (
     <div onClick={handleRedirect}>
-      <div className="max-w-[250px] min-h-[450px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-[250px] min-h-[450px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <a href="#">
-          <img
-            className="rounded-t-lg"
-            src={
-              displayImage
-                ? displayImage
-                : "../assets/images/placeholder-image-square.jpg"
-            }
-            alt=""
-          />
+          <img className="rounded-t-lg" src={displayImage} />
+          {/* {typeof displayImage === "string" && displayImage.trim() !== "Not Found" ? (
+            <img className="rounded-t-lg" src={displayImage} alt="Image" />
+          ) : (
+            <img
+              className="rounded-t-lg"
+              src="https://placehold.co/600x400?text=Image+Not+Found"
+              alt="Image Not Found"
+            />
+          )} */}
         </a>
-        <div className="p-3">
+        <div className="p-5">
           <h5 className="text-md font-semibold tracking-tight text-gray-900 dark:text-white">
             {name}
           </h5>

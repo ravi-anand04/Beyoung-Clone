@@ -9,6 +9,7 @@ const Input = (props) => {
 
   const searchHandler = () => {
     navigate(`/search/${query}`);
+    props.toggleSearchBar();
   };
 
   return (

@@ -12,9 +12,6 @@ import Register from "./Register";
 const Home = () => {
   return (
     <div>
-      {/* <Login /> */}
-      {/* <Register /> */}
-      <Navbar />
       <Hero />
       <Featured />
       <Offers />
