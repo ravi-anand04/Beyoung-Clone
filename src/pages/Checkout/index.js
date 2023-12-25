@@ -2,7 +2,6 @@ import { Button, Card, Tabs } from "flowbite-react";
 import React, { useEffect, useRef, useState } from "react";
 import { HiUserCircle } from "react-icons/hi";
 import { MdDashboard } from "react-icons/md";
-import useFetch from "../../Hooks/useFetch";
 import { CART_ACTION } from "../../constants";
 import AddressForm from "../../components/AddressForm";
 
@@ -10,19 +9,30 @@ const Checkout = () => {
   const tabsRef = useRef(null);
   const [activeTab, setActiveTab] = useState(0);
 
-  const { data, loading, error } = useFetch(CART_ACTION);
+  const [cartItems, setCartItems] = useState([]);
 
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
 
-  // if (error) {
-  //   return <p>Error: {error}</p>;
-  // }
+  const fetchCartItems = async () => {
+    // console.log("Token", `${localStorage.getItem("beyoung_token")}`);
+
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("beyoung_token")}`,
+      projectID: process.env.PROJECT_ID,
+    };
+
+    const res = await fetch(CART_ACTION, { method: "GET", headers });
+
+    const resJSON = await res.json();
+    console.log("cart data", resJSON);
+    setCartItems(resJSON.data);
+  };
 
   return (
     <div>
-      <div className="flex flex-col gap-3 px-48">
+      <div className="flex flex-col gap-3 px-48 max-xl:px-8">
         <Tabs
           aria-label="Default tabs"
           style="default"
@@ -32,58 +42,80 @@ const Checkout = () => {
         >
           <Tabs.Item active title="CART" icon={HiUserCircle}>
             <div className="flex gap-6">
-              <div className="products border-2 border-stone-300 w-3/5">
-                <div className="product">
-                  <Card
-                    className="max-w-sm m-auto my-2 rounded-xl"
-                    imgSrc="../../assets/images/jeremy-liem-z2yCj8ZB9n0-unsplash.jpg"
-                    horizontal
-                  >
-                    <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                      Sand Brown Solid Urban Shirt for Men
-                    </h5>
-                    <div className="category text-md font-light mb-2">
-                      <p>
-                        product.subCategory &&
-                        product.subCategory.charAt(0).toUpperCase() +
-                        product.subCategory.slice(1)
-                      </p>
-                    </div>
-                    <div className="price flex items-center gap-3 mb-1">
-                      <b className="text-lg">₹ product.price</b>
-                      <b className="text-xl line-through font-light text-stone-400">
-                        ₹ product.price * 2
-                      </b>
-                      <span className="text-green-500 font-semibold text-lg">
-                        (50% off)
-                      </span>
-                    </div>
-                    <div className="product-details">
-                      <hr className="h-0.5" />
-                      <div className="flex justify-around">
-                        <div className="size">
-                          {" "}
-                          <span className="font-semibold">Color</span> : Sand
-                          Brown
+              <div className="product border-stone-300 w-3/5">
+                <div className="product flex flex-col gap-4">
+                  {cartItems.items &&
+                    cartItems.items.map((item) => (
+                      <a
+                        href="#"
+                        className="flex flex-col items-start bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+                      >
+                        <img
+                          className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+                          src={item.product.displayImage}
+                          alt="Image not found"
+                        />
+                        <div className="flex flex-col justify-between p-4 leading-normal">
+                          <h5 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+                            {item.product.name}
+                          </h5>
+                          <p className="mb-1 font-normal text-gray-700 dark:text-gray-400">
+                            <div className="price flex items-center gap-2 mb-1">
+                              <b className="text-md">₹ {item.product.price}</b>
+                              <b className="text-md line-through font-light text-stone-400">
+                                ₹ {item.product.price * 2}
+                              </b>
+                              <span className="text-green-500 text-md">
+                                (50% off)
+                              </span>
+                            </div>
+                            <b className="text-md font-light text-stone-400">
+                              You save ₹{" "}
+                              <span className="text-green-500">
+                                {item.product.price}
+                              </span>
+                            </b>
+                            <hr />
+                            <div className="flex justify-between items-center">
+                              <div className="my-2 flex gap-2 items-center">
+                                <span className="font-bold text-stone-600">
+                                  Qty:
+                                </span>
+                                <select
+                                  onChange={(e) =>
+                                    setQuantity(parseInt(e.target.value))
+                                  }
+                                  className="h-10"
+                                >
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                                </select>
+                              </div>
+                              <div className="flex gap-2">
+                                <span className="font-bold text-stone-600">
+                                  Size:
+                                </span>
+                                <span>{item.size}</span>
+                              </div>
+                            </div>
+                            <hr />
+                          </p>
+                          <div className="actions flex justify-between mt-6">
+                            <span className="border-r-2 px-4 border-stone-300">
+                              Remove
+                            </span>
+                            <span className="px-4"> Move To Wishlist</span>
+                          </div>
                         </div>
-                        <div className="size">
-                          {" "}
-                          <span className="font-semibold">Size</span> : L
-                        </div>
-                      </div>
-                      <hr className="h-0.5" />
-                    </div>
-                    <div className="quantity"></div>
-                    <div className="product-details flex justify-evenly">
-                      <div className="">Remove</div>
-                      <div className="border-black-900 border-r-2"></div>
-                      <div>Move to Wishlist</div>
-                    </div>
-                  </Card>
+                      </a>
+                    ))}
                 </div>
               </div>
-              <div className="final-price border-2 border-stone-300 w-2/5 p-5">
-                <div className="price-details">
+              <div className="final-price flex flex-col justify-between border-stone-300 w-2/5 p-5">
+                <div className="price-details flex flex-col gap-4">
                   <div className="flex justify-between">
                     <h1>PRICE DETAILS ({2} items)</h1>
                   </div>
@@ -114,7 +146,7 @@ const Checkout = () => {
           </Tabs.Item>
           <Tabs.Item title="SHIPPING" icon={MdDashboard}>
             <div className="flex gap-6">
-              <div className="address border-2 border-stone-300 w-3/5">
+              <div className="address w-3/5">
                 <div className="login-check text-center mt-6 flex gap-4 justify-center items-center">
                   <span>Already have an account?</span>
                   <Button
@@ -131,7 +163,7 @@ const Checkout = () => {
                   <AddressForm />
                 </div>
               </div>
-              <div className="final-price border-2 border-stone-300 w-2/5 p-5">
+              <div className="final-price w-2/5 p-5">
                 <div className="price-details">
                   <div className="flex justify-between">
                     <h1>PRICE DETAILS ({2} items)</h1>

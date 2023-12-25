@@ -4,7 +4,7 @@ import ProductCard from "./ProductCard";
 
 const Featured = () => {
   return (
-    <div className="px-48 flex flex-col justify-center">
+    <div className="px-48 max-xl:px-8 flex flex-col justify-center">
       <div className="tabs flex gap-4 mt-2 mb-8">
         <Button gradientDuoTone="purpleToPink">NEW ARRIVALS</Button>
         <Button gradientDuoTone="purpleToPink">WINTER WEARS</Button>

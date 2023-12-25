@@ -7,7 +7,7 @@ import "swiper/css/thumbs";
 import "./styles.css";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Badge, Button, Dropdown, List } from "flowbite-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import { GiCash } from "react-icons/gi";
@@ -17,6 +17,7 @@ import { CART_ACTION, headers } from "../../constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import sanitizeHtml from "sanitize-html";
+import Login from "../Login";
 
 const Product = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -31,6 +32,12 @@ const Product = () => {
   useEffect(() => {
     fetchProductById();
   }, []);
+
+  const [openLoginModal, setLoginModal] = useState(false);
+
+  const toggleLoginModel = () => {
+    setLoginModal((prev) => !prev);
+  };
 
   const addToCart = async () => {
     if (!selectedSize) {
@@ -49,18 +56,32 @@ const Product = () => {
 
     // Add JWT
 
+    const headers = {
+      "Content-Type": "application/json",
+      projectId: process.env.PROJECT_ID,
+      Authorization: `Bearer ${localStorage.getItem("beyoung_token")}`,
+    };
+
     const url = `${CART_ACTION}/${id}`;
     const payload = {
-      quantity: quantity,
+      quantity,
       size: selectedSize,
     };
+
+    console.log("Quantity before cart", quantity);
+
     const res = await fetch(url, {
-      method: "POST",
+      method: "PATCH",
       headers,
       body: JSON.stringify(payload),
     });
+
     const resJSON = await res.json();
 
+    if (resJSON.message) {
+      toggleLoginModel();
+      return;
+    }
     console.log(resJSON);
 
     toast.success("Added to Cart", {
@@ -89,6 +110,10 @@ const Product = () => {
 
   return (
     <div className="px-48 max-xl:px-8">
+      <Login
+        openLoginModal={openLoginModal}
+        toggleLoginModel={toggleLoginModel}
+      />
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -145,9 +170,7 @@ const Product = () => {
         </div>
         <div className="w-1/2 prod-description">
           <div className="flex justify-between items-center header mb-1">
-            <h1 className="font-bold text-xl">
-              Sand Brown Solid Urban Shirt for Men
-            </h1>
+            <h1 className="font-bold text-xl">{product.name}</h1>
             <IoIosHeartEmpty size={22} />
           </div>
           <div className="category text-md font-light mb-2">
@@ -203,7 +226,6 @@ const Product = () => {
             </div>
             <div className="quantity mb-8">
               <select
-                className=""
                 onChange={(e) => setQuantity(parseInt(e.target.value))}
               >
                 <option>1</option>
