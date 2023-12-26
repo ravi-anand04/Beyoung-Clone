@@ -39,6 +39,30 @@ const Product = () => {
     setLoginModal((prev) => !prev);
   };
 
+  // const checkIfProductExists = async () => {
+  //   const headers = {
+  //     "Content-Type": "application/json",
+  //     projectId: process.env.PROJECT_ID,
+  //     Authorization: `Bearer ${localStorage.getItem("beyoung_token")}`,
+  //   };
+
+  //   const url = `${CART_ACTION}`;
+
+  //   const res = await fetch(url);
+
+  //   const resJSON = await res.json();
+
+  //   const exists = false;
+
+  //   const isExist = resJSON.items.filter((product) => {
+  //     if (product._id === id) {
+  //       exists = true;
+  //     }
+  //   });
+
+  //   return exists;
+  // };
+
   const addToCart = async () => {
     if (!selectedSize) {
       toast.error("Please select product size", {
@@ -53,8 +77,6 @@ const Product = () => {
       });
       return;
     }
-
-    // Add JWT
 
     const headers = {
       "Content-Type": "application/json",
@@ -78,7 +100,9 @@ const Product = () => {
 
     const resJSON = await res.json();
 
-    if (resJSON.message) {
+    console.log("Message", resJSON.message);
+
+    if (resJSON.message == "Invalid token. Please log in again!") {
       toggleLoginModel();
       return;
     }
@@ -225,9 +249,7 @@ const Product = () => {
                 ))}
             </div>
             <div className="quantity mb-8">
-              <select
-                onChange={(e) => setQuantity(parseInt(e.target.value))}
-              >
+              <select onChange={(e) => setQuantity(parseInt(e.target.value))}>
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
