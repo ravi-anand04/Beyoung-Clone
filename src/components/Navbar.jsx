@@ -34,7 +34,7 @@ const Navbar = () => {
     setCategories(data.data);
   };
 
-  const toggleSearchBar = () => {
+  const togglesearchbar = () => {
     setSearchBar((prev) => !prev);
   };
 
@@ -54,8 +54,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="sticky top-0 shadow-xl z-10">
-      <div className="nav-top flex justify-between py-1 text-white bg-black px-48">
+    <div className="sticky top-0 shadow-xl z-10 ">
+      <div className="nav-top flex justify-between py-1 text-white bg-black px-48 max-lg:px-12 max-sm:px-1">
         <div className="">
           <a>TRACK YOUR ORDER</a>
         </div>
@@ -101,25 +101,35 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      <div className="nav-bottom flex bg-white justify-between px-48 py-3">
-        <ul className="flex items-center gap-12">
+      <div className="nav-bottom flex bg-white justify-between px-48 max-lg:px-12 max-sm:px-1 py-3">
+        <ul className="flex items-center gap-12 max-md:gap-4">
           <li className="cursor-pointer" onClick={() => navigate("/")}>
             <BeyoungLogo />
           </li>
 
-          <li>
+          <li className="max-sm:hidden">
             <Dropdown label="MEN" dismissOnClick={false}>
               {categories.length > 0 &&
                 categories.map((category, index) => (
-                  <Dropdown.Item key={index}>{category}</Dropdown.Item>
+                  <Dropdown.Item
+                    key={index}
+                    onClick={() => navigate(`/search/${category}`)}
+                  >
+                    {category}
+                  </Dropdown.Item>
                 ))}
             </Dropdown>
           </li>
-          <li>
+          <li className="max-sm:hidden">
             <Dropdown label="WOMEN" dismissOnClick={false}>
               {categories.length > 0 &&
                 categories.map((category, index) => (
-                  <Dropdown.Item key={index}>{category}</Dropdown.Item>
+                  <Dropdown.Item
+                    key={index}
+                    onClick={() => navigate(`/search/${category}`)}
+                  >
+                    {category}
+                  </Dropdown.Item>
                 ))}
             </Dropdown>
           </li>
@@ -141,14 +151,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="SearchBar">
-        {searchBar && (
-          <Input
-            className="px-4 w-64"
-            placeholder="Search entire store here..."
-            type="text"
-            toggleSearchBar={toggleSearchBar}
-          />
-        )}
+        {searchBar && <Input togglesearchbar={togglesearchbar} />}
       </div>
     </div>
   );

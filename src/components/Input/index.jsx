@@ -9,7 +9,7 @@ const Input = (props) => {
 
   const searchHandler = () => {
     navigate(`/search/${query}`);
-    props.toggleSearchBar();
+    props.togglesearchbar();
   };
 
   return (
@@ -18,7 +18,9 @@ const Input = (props) => {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          {...props}
+          className="px-4 w-64"
+          placeholder="Search entire store here..."
+          type="text"
         />
         <Button
           onClick={searchHandler}

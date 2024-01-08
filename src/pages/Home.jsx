@@ -6,14 +6,12 @@ import Offers from "../components/Offers";
 import SavingZone from "../components/SavingZone";
 import HomeProducts from "../components/HomeProducts/HomeProducts";
 import Loader from "../components/Loader";
-import Login from "./Login";
-import Register from "./Register";
 
 const Home = () => {
   return (
     <div>
       <Hero />
-      <Featured />
+      {/* <Featured /> */}
       <Offers />
       <HomeProducts />
     </div>

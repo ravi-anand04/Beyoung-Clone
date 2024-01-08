@@ -24,6 +24,7 @@ const Register = ({ openRegisterModal, toggleRegisterModel }) => {
     if (!email.includes("@") || !email.includes(".com")) {
       setError((prev) => {
         return { ...prev, email: "Invalid email" };
+        
       });
     }
 

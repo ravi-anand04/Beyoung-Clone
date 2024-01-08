@@ -48,15 +48,15 @@ const HomeProducts = () => {
     } else if (type == "trouser") {
       setTrouser(resJSON.data);
     }
-    console.log(resJSON);
+    // console.log(resJSON);
   };
 
   return (
-    <div className="px-48 max-xl:px-8">
+    <div className="px-48 max-xl:px-8 max-sm:px-1">
       <div className="men-banner">
         <img src="https://www.beyoung.in/api/catalog/homepage-3-10/desktop/strip/strip.jpg" />
       </div>
-      <div className="men-banner text-center font-semibold font-sans text-2xl  my-16 rounded-lg py-2 bg-yellow-300">
+      <div className="men-banner text-center font-semibold font-sans text-2xl my-16 max-sm:my-6 rounded-lg py-2 bg-gradient-to-r from-yellow-100 via-yellow-300 to-yellow-100">
         FOR MEN
       </div>
       <div className="tshirt">
@@ -116,7 +116,7 @@ const HomeProducts = () => {
         </div>
       </div>
 
-      <div className="shirt mb-16">
+      <div className="shirt mb-16 max-sm:m-1">
         <span className="font-bold text-2xl border-l-4 border-yellow-300 px-2">
           SHIRTS
         </span>
@@ -154,7 +154,7 @@ const HomeProducts = () => {
         </Swiper>
       </div>
 
-      <div className="trouser mb-16">
+      <div className="trouser mb-16 max-sm:my-8">
         <span className="font-bold text-2xl border-l-4 border-yellow-300 px-2">
           TROUSERS
         </span>
@@ -192,10 +192,10 @@ const HomeProducts = () => {
         </Swiper>
       </div>
 
-      <div className="men-banner text-center font-semibold font-sans text-2xl  my-16 rounded-lg py-2 bg-yellow-300">
+      <div className="men-banner text-center font-semibold font-sans text-2xl  my-16 max-sm:my-8 rounded-lg py-2 bg-gradient-to-r from-yellow-100 via-yellow-300 to-yellow-100">
         FOR WOMEN
       </div>
-      <div className="trouser mb-16">
+      <div className="trouser mb-16 max-sm:my-8">
         <span className="font-bold text-2xl border-l-4 border-yellow-300 px-2">
           Products
         </span>
@@ -232,7 +232,6 @@ const HomeProducts = () => {
             ))}
         </Swiper>
       </div>
-      <div className="women-clothes"></div>
 
       <div className="women-banner">
         <img
@@ -241,10 +240,10 @@ const HomeProducts = () => {
         />
       </div>
       <div className="shop-the-look ">
-        <div className="text-3xl font-semibold my-16 rounded-lg py-2 ">
+        <div className="text-3xl font-bold my-16 max-sm:my-8 border-l-4 border-yellow-300 px-2">
           SHOP THE LOOK
         </div>
-        <div className="flex justify-center gap-4 rounded-lg">
+        <div className="flex flex-wrap justify-center gap-4 rounded-lg">
           <img
             className="w-64"
             src="https://www.beyoung.in/api/catalog/homepage-3-10/shop-the-look/1.jpg"
@@ -267,12 +266,14 @@ const HomeProducts = () => {
           />
         </div>
       </div>
-      <div className="flex featured-on items-center my-16">
-        <div className="flex-1 h-1 bg-yellow-300"></div>
-        <div className="px-4 text-3xl uppercase font-semibold">FEATURED ON</div>
-        <div className="flex-1 h-1 bg-yellow-300"></div>
+      <div className="flex featured-on items-center my-16 max-sm:my-8">
+        <div className="flex-1 h-1 bg-yellow-300 max-sm:hidden"></div>
+        <div className="px-4 text-2xl uppercase font-bold max-sm:border-l-4 max-sm:border-yellow-300 max-sm:px-2">
+          FEATURED ON
+        </div>
+        <div className="flex-1 h-1 bg-yellow-300 max-sm:hidden"></div>
       </div>
-      <div className="subscribe flex my-24 bg-gray-200 p-5">
+      <div className="subscribe flex my-24 max-sm:my-8 bg-gray-200 p-5">
         <div className="details">
           Basic styles se latest fashion tak ki updates! Get extra savings,
           exclusive Coupons & hell lot of everyday deals DIRECT-TO-YOUR inbox

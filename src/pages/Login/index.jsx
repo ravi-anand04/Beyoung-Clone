@@ -3,11 +3,14 @@ import { Button, Modal, Checkbox, Label, TextInput } from "flowbite-react";
 import loginImage from "../../assets/images/login-and-signup-image.jpg";
 import { LOGIN_URL } from "../../constants";
 import { headers } from "../../constants";
+import Loader from "../../components/Loader";
 
 const Login = ({ toggleLoginModel, openLoginModal }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "" });
+
+  const [loader, setLoader] = useState(false);
 
   function onCloseModal() {
     toggleLoginModel();
@@ -35,6 +38,7 @@ const Login = ({ toggleLoginModel, openLoginModal }) => {
   };
 
   const submitForm = async () => {
+    setLoader(true);
     formValidation();
 
     const payload = JSON.stringify({
@@ -52,7 +56,7 @@ const Login = ({ toggleLoginModel, openLoginModal }) => {
 
     if (resJSON.status === "success") {
       localStorage.setItem("beyoung_token", resJSON.token);
-
+      setLoader(false);
       window.location.reload();
     }
 
