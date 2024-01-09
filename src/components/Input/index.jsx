@@ -14,7 +14,7 @@ const Input = (props) => {
 
   return (
     <div>
-      <div className="flex justify-end right-40 absolute p-4 bg-white">
+      <div className="flex justify-end right-40 absolute max-sm:static p-4 bg-white">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
