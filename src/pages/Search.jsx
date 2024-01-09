@@ -126,8 +126,8 @@ const Search = () => {
   return (
     <div className="xl:px-36 px-12">
       <h1 className="font-bold text-2xl my-5">FILTERS</h1>
-      <div className="flex gap-4 main">
-        <div className="filters w-1/4 max-lg:w-1/2 ">
+      <div className="flex gap-4 main max-md:flex-col">
+        <div className="filters w-1/4 max-lg:w-1/2 max-md:w-full ">
           <div className="selected-filters mb-4 flex flex-col gap-4 flex-wrap">
             <div className="filtered-colors flex flex-wrap gap-2">
               {selectedFilters.color.map((color) => (
@@ -275,7 +275,7 @@ const Search = () => {
           </Accordion>
         </div>
 
-        <div className="products w-3/4 mb-12">
+        <div className="products w-3/4 mb-12 max-md:w-full">
           {loader && <Loader />}
 
           {products.length === 0 ? (

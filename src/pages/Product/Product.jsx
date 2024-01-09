@@ -123,7 +123,6 @@ const Product = () => {
   const fetchProductById = async () => {
     const url = `https://academics.newtonschool.co/api/v1/ecommerce/product/${id}`;
     const res = await fetch(url, { method: "GET", headers });
-    console.log("URL", url);
 
     if (res.status != "fail") {
       const resJSON = await res.json();
@@ -150,8 +149,8 @@ const Product = () => {
         pauseOnHover
         theme="dark"
       />
-      <div className="flex gap-16 pt-12">
-        <div className="w-1/2">
+      <div className="flex max-md:flex-col max-md:gap-8 gap-16 pt-12">
+        <div className="w-1/2 max-md:w-3/4 m-auto h-[100vh]">
           <Swiper
             style={{
               "--swiper-navigation-color": "#fff",
@@ -192,7 +191,7 @@ const Product = () => {
               ))}
           </Swiper>
         </div>
-        <div className="w-1/2 prod-description">
+        <div className="w-1/2 prod-description max-md:w-full">
           <div className="flex justify-between items-center header mb-1">
             <h1 className="font-bold text-xl">{product.name}</h1>
             <IoIosHeartEmpty size={22} />
@@ -232,7 +231,7 @@ const Product = () => {
             <div className="color items-center gap-2 my-4">
               <div className="text-xl mb-2">COLOR</div>
               <div
-                class="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full"
                 style={{ backgroundColor: product.color || "black" }}
               ></div>
             </div>
@@ -257,8 +256,8 @@ const Product = () => {
                 <option>5</option>
               </select>
             </div>
-            <div className="actions flex gap-2 justify-between mb-8">
-              <Button className="py-1 rounded-md w-2/5 bg-cyan-400">
+            <div className="actions flex max-md:flex-col  gap-2 justify-between mb-8">
+              <Button className="py-1 rounded-md w-2/5 max-md:w-full bg-cyan-400">
                 <b className="text-xl mr-2">
                   <FaShoppingCart />
                 </b>
@@ -267,7 +266,7 @@ const Product = () => {
                   ADD TO CART
                 </span>
               </Button>
-              <Button className="py-1 rounded-md w-3/5 bg-yellow-300">
+              <Button className="py-1 rounded-md w-3/5 max-md:w-full bg-yellow-300">
                 <b className="text-2xl mr-2">
                   <IoArrowForwardCircleOutline />
                 </b>
@@ -276,7 +275,7 @@ const Product = () => {
             </div>
             <div className="delivery-options mt-4">
               <span className="text-lg font-semibold">DELIVERY OPTIONS</span>
-              <div className="options mt-4 p-4 border-2 border-black-600">
+              <div className="options mt-4 p-4 border-2 max-md:mb-4 w-1/2 max-sm:w-full border-black-600">
                 <span className="flex gap-4 items-center">
                   <GiCash className="text-lg" /> Cash On Delivery
                 </span>
@@ -288,18 +287,18 @@ const Product = () => {
           </div>
         </div>
       </div>
-      <div className="description flex gap-4 mb-12">
-        <div className="bg-stone-100 px-12 py-6 product-details w-3/5">
+      <div className="description flex max-md:flex-col gap-4 mb-12">
+        <div className="bg-stone-100 px-12 py-6 product-details w-3/5 max-md:w-full">
           <h1 className="text-lg font-bold">Product Details</h1>
-          <p>
+          <div>
             <div
               dangerouslySetInnerHTML={{
                 __html: sanitizeHtml(product.description),
               }}
             ></div>
-          </p>
+          </div>
         </div>
-        <div className="bg-stone-100 policy px-12 py-6 w-2/5">
+        <div className="bg-stone-100 policy px-12 py-6 w-2/5 max-md:w-full">
           <h1 className="text-lg font-bold">Delivery & Return Policy</h1>
           <p className="text-md mb-4">
             We provide free shipping on all orders. Pay online to avoid charges

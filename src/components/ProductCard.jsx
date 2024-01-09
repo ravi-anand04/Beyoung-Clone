@@ -29,11 +29,11 @@ const ProductCard = ({ product }) => {
         if (res.ok && res.headers.get("content-type")?.startsWith("image")) {
           setImageUrl(displayImage);
         } else {
-          setImageUrl("https://placehold.co/600x500?text=Image+Not+Found");
+          setImageUrl("https://placehold.co/600x600?text=Image+Not+Found");
         }
       } catch (error) {
         console.error("Error fetching image:", error);
-        setImageUrl("https://placehold.co/600x500?text=Image+Not+Found");
+        setImageUrl("https://placehold.co/600x600?text=Image+Not+Found");
       }
     };
     imageCheck();
