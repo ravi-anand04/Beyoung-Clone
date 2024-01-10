@@ -50,7 +50,7 @@ const Checkout = () => {
     const res = await fetch(CART_ACTION, { method: "GET", headers });
 
     const resJSON = await res.json();
-    console.log("cart data", resJSON.results);
+
     setCartItems(resJSON.data);
     setTotalItems(resJSON.results);
   };
@@ -110,8 +110,6 @@ const Checkout = () => {
     });
 
     const resJSON = await res.json();
-
-    console.log("Order message", resJSON.message);
   };
 
   const shippingCheckout = () => {
@@ -197,17 +195,17 @@ const Checkout = () => {
                   title="CART"
                   icon={HiUserCircle}
                 >
-                  <div className="flex gap-6">
-                    <div className="product border-stone-300 w-3/5">
-                      <div className="product flex flex-col gap-4">
+                  <div className="flex max-lg:flex-col gap-6">
+                    <div className="product border-stone-300 w-3/5 max-lg:w-full">
+                      <div className="product flex flex-col max-md:items-center gap-4">
                         {cartItems.items &&
                           cartItems.items.map((item, index) => (
                             <a
                               href="#"
-                              className="flex flex-col p-4 items-start bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+                              className="flex flex-col p-4 max-md:p-2 items-start bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
                             >
                               <img
-                                className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+                                className="object-cover max-md:h-48 w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
                                 src={item.product.displayImage}
                                 alt="Image not found"
                               />
@@ -218,10 +216,10 @@ const Checkout = () => {
                                 <p className="mb-1 font-normal text-gray-700 dark:text-gray-400">
                                   <div className="price flex items-center gap-2 mb-1">
                                     <b className="text-md">
-                                      ₹ {item.product.price}
+                                      ₹ {item.product.price * item.quantity}
                                     </b>
                                     <b className="text-md line-through font-light text-stone-400">
-                                      ₹ {item.product.price * 2}
+                                      ₹ {item.product.price * item.quantity * 2}
                                     </b>
                                     <span className="text-green-500 text-md">
                                       (50% off)
@@ -230,7 +228,7 @@ const Checkout = () => {
                                   <b className="text-md font-light text-stone-400">
                                     You save ₹{" "}
                                     <span className="text-green-500">
-                                      {item.product.price}
+                                      {item.product.price * item.quantity}
                                     </span>
                                   </b>
                                   <hr className="mt-4" />
@@ -241,31 +239,9 @@ const Checkout = () => {
                                       </span>
                                       <div className="item-quantity flex flex-col justify-center items-center">
                                         <IoIosArrowUp />
-                                        {/* <input
-                                 type="number"
-                                 min="1"
-                                 value={item.quantity}
-                                 onChange={(e) =>
-                                   updateQuantity(
-                                     item.id,
-                                     parseInt(e.target.value)
-                                   )
-                                 }
-                               />
-                               ) */}
                                         {item.quantity}
                                         <IoIosArrowDown />
                                       </div>
-                                      {/* <select
-                               className="h-10"
-                               value={item.quantity}
-                             >
-                               <option>1</option>
-                               <option>2</option>
-                               <option>3</option>
-                               <option>4</option>
-                               <option>5</option>
-                             </select> */}
                                     </div>
                                     <div className="flex gap-2">
                                       <span className="font-bold text-stone-600">
@@ -290,7 +266,7 @@ const Checkout = () => {
                           ))}
                       </div>
                     </div>
-                    <div className="final-price flex flex-col rounded-xl shadow-2xl border-stone-300 w-2/5 p-5 h-96 bg-white sticky top-40">
+                    <div className="final-price flex flex-col rounded-xl shadow-2xl border-stone-300 w-2/5  max-lg:w-full p-5 h-96 bg-white sticky top-40">
                       <div className="price-details flex flex-col gap-4 flex-shrink">
                         <div className="flex justify-between">
                           <span className="font-semibold text-xl">
@@ -339,8 +315,8 @@ const Checkout = () => {
                   title="SHIPPING"
                   icon={MdDashboard}
                 >
-                  <div className="flex gap-6">
-                    <div className="address w-3/5">
+                  <div className="flex max-md:flex-col gap-6">
+                    <div className="address w-3/5 max-md:w-full">
                       <div className="login-check text-center flex gap-4 justify-center items-center">
                         <span>Already have an account?</span>
                         <Button
@@ -363,7 +339,7 @@ const Checkout = () => {
                         />
                       </div>
                     </div>
-                    <div className="final-price flex flex-col justify-between rounded-xl shadow-2xl border-stone-300 w-2/5 p-5 h-96 bg-white sticky top-40">
+                    <div className="final-price flex flex-col justify-between rounded-xl shadow-2xl border-stone-300 w-2/5 max-md:w-full p-5 h-96 bg-white sticky top-40">
                       <div className="price-details flex flex-col gap-4">
                         <div className="flex justify-between">
                           <span className="font-semibold text-xl">
@@ -411,28 +387,28 @@ const Checkout = () => {
                   title="PAYMENT"
                   icon={MdDashboard}
                 >
-                  <div className="flex gap-6">
-                    <div className="payment w-3/5 flex gap-4">
-                      <div className="pay-options w-2/5 flex flex-col gap-2">
-                        <div className="font-bold p-4 bg-stone-200">
+                  <div className="flex max-md:flex-col gap-6">
+                    <div className="payment w-3/5 flex max-md:flex-col gap-4 max-md:w-full">
+                      <div className="pay-options w-2/5 max-md:w-full flex flex-col gap-2">
+                        <div className="font-bold p-4 bg-stone-200 hover:bg-stone-300">
                           Pay With Paytm
                         </div>
-                        <div className="font-bold p-4 bg-stone-200">
+                        <div className="font-bold p-4 bg-stone-200 hover:bg-stone-300">
                           Debit/Credit Card
                         </div>
-                        <div className="font-bold p-4 bg-stone-200">
+                        <div className="font-bold p-4 bg-stone-200 hover:bg-stone-300">
                           UPI
                           <h2>google Pay, Phone Pay, & More+</h2>
                         </div>
-                        <div className="font-bold p-4 bg-stone-200">
+                        <div className="font-bold p-4 bg-stone-200 hover:bg-stone-300">
                           Wallets
                           <h2>Offers Paytm, Mobikwik, & More+</h2>
                         </div>
-                        <div className="font-bold p-4 bg-stone-200">
+                        <div className="font-bold p-4 bg-stone-200 hover:bg-stone-300">
                           Netbanking
                           <h2>All Indian Banks</h2>
                         </div>
-                        <div className="font-bold p-4 bg-stone-200">
+                        <div className="font-bold p-4 bg-stone-200 hover:bg-stone-300">
                           Cash on Delivery{" "}
                           <h2>
                             Pay online to avoid cash handling charges (₹50 per
@@ -440,17 +416,13 @@ const Checkout = () => {
                           </h2>
                         </div>
                       </div>
-                      <div className="payment-banner w-3/5 flex gap-2">
+                      <div className="payment-banner w-3/5 max-md:w-full flex gap-2">
                         <h1 className="font-semibold text-lg flex justify-center">
                           100% Secured By PAYTM
                         </h1>
-                        {/* <img
-                 src="https://www.beyoung.in/desktop/images/form/paytm1.png"
-                 alt=""
-               /> */}
                       </div>
                     </div>
-                    <div className="final-price flex flex-col justify-between rounded-xl shadow-2xl border-stone-300 w-2/5 p-5 bg-white sticky top-40">
+                    <div className="final-price flex flex-col max-md:w-full justify-between rounded-xl shadow-2xl border-stone-300 w-2/5 p-5 bg-white sticky top-40">
                       <div className="address">Address</div>
                       <div className="price-details flex flex-col gap-4">
                         <div className="flex justify-between">
