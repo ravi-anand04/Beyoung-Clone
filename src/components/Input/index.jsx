@@ -8,8 +8,15 @@ const Input = (props) => {
   const navigate = useNavigate();
 
   const searchHandler = () => {
-    navigate(`/search/${query}`);
-    props.togglesearchbar();
+    if (query) {
+      navigate(`/search/${query}`);
+      window.location.reload();
+      props.togglesearchbar();
+    }
+  };
+
+  const changeHandler = (e) => {
+    setQuery(e.target.value);
   };
 
   return (
@@ -17,7 +24,7 @@ const Input = (props) => {
       <div className="flex justify-end right-40 absolute max-sm:static p-4 bg-white">
         <input
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => changeHandler(e)}
           className="px-4 w-64"
           placeholder="Search entire store here..."
           type="text"

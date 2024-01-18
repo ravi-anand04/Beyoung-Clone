@@ -26,6 +26,9 @@ const Product = () => {
 
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
+  const [selected, setSelected] = useState("");
+
+  const navigate = useNavigate("");
 
   const { id } = useParams();
   // 652675cddaf00355a7838b67
@@ -38,30 +41,6 @@ const Product = () => {
   const toggleLoginModel = () => {
     setLoginModal((prev) => !prev);
   };
-
-  // const checkIfProductExists = async () => {
-  //   const headers = {
-  //     "Content-Type": "application/json",
-  //     projectId: process.env.PROJECT_ID,
-  //     Authorization: `Bearer ${localStorage.getItem("beyoung_token")}`,
-  //   };
-
-  //   const url = `${CART_ACTION}`;
-
-  //   const res = await fetch(url);
-
-  //   const resJSON = await res.json();
-
-  //   const exists = false;
-
-  //   const isExist = resJSON.items.filter((product) => {
-  //     if (product._id === id) {
-  //       exists = true;
-  //     }
-  //   });
-
-  //   return exists;
-  // };
 
   const addToCart = async () => {
     if (!selectedSize) {
@@ -118,6 +97,10 @@ const Product = () => {
       progress: undefined,
       theme: "dark",
     });
+  };
+
+  const buyNow = () => {
+    navigate(`/checkout?id=${id}&quantity=${quantity}`);
   };
 
   const fetchProductById = async () => {
@@ -240,8 +223,13 @@ const Product = () => {
               {product.size &&
                 product.size.map((size) => (
                   <div
-                    onClick={(e) => setSelectedSize(e.target.innerText)}
-                    className="cursor-pointer rounded-full px-4 w-10 h-10 flex justify-center items-center border-2 border-rose-800"
+                    onClick={(e) => {
+                      setSelected(size);
+                      setSelectedSize(e.target.innerText);
+                    }}
+                    className={`${
+                      selected === size ? "bg-rose-800 text-white" : ""
+                    } cursor-pointer rounded-full px-4 w-10 h-10 flex justify-center items-center border-2 border-rose-800`}
                   >
                     {size}
                   </div>
@@ -270,7 +258,10 @@ const Product = () => {
                 <b className="text-2xl mr-2">
                   <IoArrowForwardCircleOutline />
                 </b>
-                <span className="text-lg"> BUY NOW</span>
+                <span className="text-lg" onClick={buyNow}>
+                  {" "}
+                  BUY NOW
+                </span>
               </Button>
             </div>
             <div className="delivery-options mt-4">

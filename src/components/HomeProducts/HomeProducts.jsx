@@ -15,6 +15,7 @@ const HomeProducts = () => {
   const [tshirt, setTshirt] = useState([]);
   const [trouser, setTrouser] = useState([]);
   const [womenProducts, setWomenProducts] = useState([]);
+  const [subscribe, setSubscribe] = useState(false);
 
   useEffect(() => {
     fetchProducts("tshirt");
@@ -283,13 +284,24 @@ const HomeProducts = () => {
           Basic styles se latest fashion tak ki updates! Get extra savings,
           exclusive Coupons & hell lot of everyday deals DIRECT-TO-YOUR inbox
         </div>
-        <div className="flex gap-2 max-sm:flex-col max-md:flex-row max-sm:gap-4">
-          <input
-            type="text"
-            placeholder="Enter your email address"
-            className="border-none"
-          />
-          <Button gradientDuoTone="redToYellow" className="w-[200px]">
+        <div className="flex items-start gap-2 max-sm:flex-col max-md:flex-row max-sm:gap-4">
+          <div className="flex flex-col gap-2">
+            <input
+              type="text"
+              placeholder="Enter your email address"
+              className="border-none"
+            />
+            {subscribe && (
+              <div className="subscribe text-center text-sm text-red-400">
+                Subscribed Successfully!
+              </div>
+            )}
+          </div>
+          <Button
+            gradientDuoTone="redToYellow"
+            className="w-[200px]"
+            onClick={() => setSubscribe(!subscribe)}
+          >
             I AM IN
           </Button>
         </div>

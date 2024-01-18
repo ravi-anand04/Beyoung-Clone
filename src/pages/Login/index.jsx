@@ -5,7 +5,12 @@ import { LOGIN_URL } from "../../constants";
 import { headers } from "../../constants";
 import Loader from "../../components/Loader";
 
-const Login = ({ toggleLoginModel, openLoginModal }) => {
+const Login = ({
+  toggleLoginModel,
+  toggleRegisterModel,
+  openLoginModal,
+  updateName,
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "" });
@@ -18,6 +23,8 @@ const Login = ({ toggleLoginModel, openLoginModal }) => {
   }
 
   const formValidation = () => {
+    let result = true;
+
     setError((prev) => {
       return { ...prev, email: "", password: "", name: "" };
     });
@@ -26,20 +33,27 @@ const Login = ({ toggleLoginModel, openLoginModal }) => {
       setError((prev) => {
         return { ...prev, email: "Invalid email" };
       });
+      result = false;
     }
 
     if (password.length < 5 || password.length > 15) {
       setError((prev) => {
         return { ...prev, password: "Invalid password" };
       });
-
-      return;
+      result = false;
     }
+
+    return result;
   };
 
   const submitForm = async () => {
     setLoader(true);
-    formValidation();
+    const result = formValidation();
+
+    if (result === false) {
+      console.log("Returning from result");
+      return;
+    }
 
     const payload = JSON.stringify({
       email,
@@ -55,8 +69,13 @@ const Login = ({ toggleLoginModel, openLoginModal }) => {
     const resJSON = await res.json();
 
     if (resJSON.status === "success") {
+      // updateName(resJSON.data.name);
+      // console.log("Json", resJSON.data.name);
       localStorage.setItem("beyoung_token", resJSON.token);
+      localStorage.setItem("beyoung_name", resJSON.data.name.toUpperCase());
       setLoader(false);
+      updateName(resJSON.data.name);
+      toggleLoginModel();
       window.location.reload();
     }
 
@@ -131,14 +150,6 @@ const Login = ({ toggleLoginModel, openLoginModal }) => {
                 }
               />
             </div>
-            <div className="flex justify-between">
-              <a
-                href="#"
-                className="text-sm text-cyan-700 hover:underline dark:text-cyan-500"
-              >
-                Forgot Password?
-              </a>
-            </div>
             <div>
               <Button className="w-full" onClick={submitForm}>
                 LOGIN
@@ -149,6 +160,10 @@ const Login = ({ toggleLoginModel, openLoginModal }) => {
               <a
                 href="#"
                 className="text-cyan-700 hover:underline dark:text-cyan-500"
+                onClick={() => {
+                  toggleLoginModel();
+                  toggleRegisterModel();
+                }}
               >
                 Create account
               </a>

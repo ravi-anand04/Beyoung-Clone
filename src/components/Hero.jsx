@@ -1,6 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/search/shirt`);
+  };
+
   return (
     <div className="">
       <div className="main">
@@ -9,6 +16,7 @@ const Hero = () => {
             src="https://www.beyoung.in/api/catalog/homepage-28-11/main-banner/SHIRT-BANNER-DESKTOP-VIEW.jpg"
             alt=""
             className="max-sm:hidden"
+            onClick={handleClick}
           />
         </a>
       </div>

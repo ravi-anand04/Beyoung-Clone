@@ -3,8 +3,13 @@ import { Button, Modal, Checkbox, Label, TextInput } from "flowbite-react";
 import loginImage from "../../assets/images/login-and-signup-image.jpg";
 import { SIGNUP_URL } from "../../constants";
 import { headers } from "../../constants";
+import { Navigate } from "react-router-dom";
 
-const Register = ({ openRegisterModal, toggleRegisterModel }) => {
+const Register = ({
+  openRegisterModal,
+  toggleLoginModel,
+  toggleRegisterModel,
+}) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -17,6 +22,8 @@ const Register = ({ openRegisterModal, toggleRegisterModel }) => {
   }
 
   const formValidation = () => {
+    let result = true;
+
     setError((prev) => {
       return { ...prev, email: "", password: "", name: "" };
     });
@@ -24,26 +31,35 @@ const Register = ({ openRegisterModal, toggleRegisterModel }) => {
     if (!email.includes("@") || !email.includes(".com")) {
       setError((prev) => {
         return { ...prev, email: "Invalid email" };
-        
       });
+
+      result = false;
     }
 
     if (password.length < 5 || password.length > 15) {
       setError((prev) => {
         return { ...prev, password: "Invalid password" };
       });
+      result = false;
     }
 
     if (!name) {
       setError((prev) => {
         return { ...prev, name: "Name cannot be empty" };
       });
-      return;
+      result = false;
     }
+
+    return result;
   };
 
   const submitForm = async () => {
-    formValidation();
+    const result = formValidation();
+
+    if (result === false) {
+      console.log("Returning from register result");
+      return;
+    }
 
     const payload = JSON.stringify({
       name,
@@ -169,8 +185,12 @@ const Register = ({ openRegisterModal, toggleRegisterModel }) => {
               <a
                 href="#"
                 className="text-cyan-700 hover:underline dark:text-cyan-500"
+                onClick={() => {
+                  toggleRegisterModel();
+                  toggleLoginModel();
+                }}
               >
-                Sign In
+                Log In
               </a>
             </div>
           </div>
