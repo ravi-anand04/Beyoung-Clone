@@ -77,7 +77,7 @@ const Register = ({
 
     if (resJSON.status === "success") {
       localStorage.setItem("beyoung_token", resJSON.token);
-
+      localStorage.setItem("beyoung_name", resJSON.data.user.name);
       window.location.reload();
     }
 

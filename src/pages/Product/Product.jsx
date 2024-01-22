@@ -100,7 +100,7 @@ const Product = () => {
   };
 
   const buyNow = () => {
-    navigate(`/checkout?id=${id}&quantity=${quantity}`);
+    navigate(`/checkout/${id}/${quantity}/${selectedSize}`);
   };
 
   const fetchProductById = async () => {

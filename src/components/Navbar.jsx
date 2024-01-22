@@ -8,7 +8,7 @@ import { Button, Dropdown } from "flowbite-react";
 import Input from "./Input";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { person } from "../username";
 
 const Navbar = () => {
@@ -46,8 +46,6 @@ const Navbar = () => {
   };
 
   const updateName = (value) => {
-    console.log(value);
-    console.log("Testing--");
     setName(value);
   };
 
@@ -83,23 +81,23 @@ const Navbar = () => {
   };
 
   return (
-    <div className="sticky top-0 shadow-xl z-10 ">
+    <div className="sticky top-0 shadow-xl z-10">
       <div className="nav-top flex justify-between py-1 text-white bg-black px-48 max-lg:px-12 max-sm:px-1">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center cursor-pointer">
           <SlLocationPin className="text-xl" />
-          <a>TRACK YOUR ORDER</a>
+          <Link to="/track">TRACK YOUR ORDER</Link>
         </div>
         <div>
           {isLoggedIn ? (
             <>
               <span className="cursor-pointer">
                 {" "}
-                Welcome, {localStorage.getItem("beyoung_name") ||
-                  "Welcome"} |{" "}
+                Welcome, {localStorage.getItem("beyoung_name")} |{" "}
               </span>
               <span
                 className="cursor-pointer"
                 onClick={() => {
+                  localStorage.removeItem("beyoung_name");  
                   localStorage.removeItem("beyoung_token");
                   window.location.reload();
                 }}

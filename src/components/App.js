@@ -3,11 +3,9 @@ import Home from "../pages/Home";
 import "../styles/App.css";
 import Search from "../pages/Search";
 import ProductDetails from "../pages/Product/Product";
-import Cart from "../pages/Cart";
-import Shipping from "../pages/Shipping";
-import Payment from "../pages/Payment";
 import Checkout from "../pages/Checkout";
 import Navbar from "./Navbar";
+import TrackOrder from "../pages/TrackOrder";
 
 function App() {
   return (
@@ -22,9 +20,8 @@ function App() {
           <Route path="/search/:query" element={<Search />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/checkout/cart" element={<Cart />} />
-          <Route path="/checkout/shipping" element={<Shipping />} />
-          <Route path="/checkout/payment" element={<Payment />} />
+          <Route path="/checkout/:id/:quantity/:size" element={<Checkout />} />
+          <Route path="/track" element={<TrackOrder />} />
         </Routes>
       </div>
     </BrowserRouter>
