@@ -123,13 +123,16 @@ const Checkout = () => {
         quantity: cartItem.quantity,
         addressType: "HOME",
         address: {
-          street,
-          city,
-          state,
-          country,
-          zipCode,
+          street: "123 Main St",
+          city: "Anytown",
+          state: "CA",
+          country: "USA",
+          zipCode: "12345",
         },
       });
+
+      console.log("Payload", payload);
+
       const res = await fetch(ADD_TO_ORDER, {
         method: "POST",
         headers,

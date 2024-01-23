@@ -114,7 +114,7 @@ const Login = ({
                 shadow
                 onChange={(event) => setEmail(event.target.value)}
                 required
-                color={error.email ? "failure" : ""}
+                color={error.email ? "failure" : "gray"}
                 helperText={
                   error.email ? (
                     <>
@@ -136,7 +136,7 @@ const Login = ({
                 shadow
                 required
                 onChange={(event) => setPassword(event.target.value)}
-                color={error.password ? "failure" : ""}
+                color={error.password ? "failure" : "gray"}
                 helperText={
                   error.password ? (
                     <>

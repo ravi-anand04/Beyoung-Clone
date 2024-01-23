@@ -67,18 +67,20 @@ const Navbar = () => {
   const handleHover = (type) => {
     if (type === "men") {
       setMenDropdown((prev) => !prev);
+      setWomenDropdown(false);
     } else {
       setWomenDropdown((prev) => !prev);
+      setMenDropdown(false);
     }
   };
 
-  const handleLeave = (type) => {
-    if (type === "men") {
-      setMenDropdown((prev) => !prev);
-    } else {
-      setWomenDropdown((prev) => !prev);
-    }
-  };
+  // const handleLeave = (type) => {
+  //   if (type === "men") {
+  //     setMenDropdown((prev) => !prev);
+  //   } else {
+  //     setWomenDropdown((prev) => !prev);
+  //   }
+  // };
 
   return (
     <div className="sticky top-0 shadow-xl z-10">
@@ -97,7 +99,7 @@ const Navbar = () => {
               <span
                 className="cursor-pointer"
                 onClick={() => {
-                  localStorage.removeItem("beyoung_name");  
+                  localStorage.removeItem("beyoung_name");
                   localStorage.removeItem("beyoung_token");
                   window.location.reload();
                 }}
@@ -143,19 +145,17 @@ const Navbar = () => {
           </li>
 
           <h1
-            className="hover:bg-yellow-100 p-4 font-semibold"
+            className="hover:bg-yellow-100 p-4 font-bold text-lg"
             onMouseEnter={() => handleHover("men")}
-            onMouseLeave={() => handleLeave("men")}
           >
-            MEN
+            SHOP BY CATEGORY
           </h1>
-          <h1
+          {/* <h1
             className="hover:bg-yellow-100 p-4 font-semibold"
             onMouseEnter={() => handleHover("women")}
-            onMouseLeave={() => handleLeave("women")}
           >
             WOMEN
-          </h1>
+          </h1> */}
         </ul>
 
         <div className="flex items-center gap-5">
@@ -180,30 +180,45 @@ const Navbar = () => {
         {searchBar && <Input togglesearchbar={togglesearchbar} />}
       </div>
 
-      <div className="px-48 max-lg:px-12 max-sm:px-1 men">
+      <div
+        className="px-48 max-lg:px-12 max-sm:px-1 men"
+        onMouseLeave={() => setMenDropdown(false)}
+      >
         {menDropdown && (
-          <div className="flex justify-center gap-8 flex-wrap">
+          <div className="flex justify-center gap-4 flex-wrap p-2">
             {categories.length > 0 &&
               categories.map((category) => (
-                <h1 onClick={() => navigate(`/search/${category}`)}>
+                <h1
+                  onClick={() => {
+                    navigate(`/search/${category}`);
+                    window.location.reload();
+                  }}
+                  className="hover:bg-stone-200 px-4 py-2 rounded-lg cursor-pointer"
+                >
                   {category.charAt(0).toUpperCase() + category.substring(1)}
                 </h1>
               ))}
           </div>
         )}
       </div>
-      <div className="px-48 max-lg:px-12 max-sm:px-1 women">
+      {/* <div className="px-48 max-lg:px-12 max-sm:px-1 women">
         {womenDropdown && (
-          <div className="flex justify-center gap-8 flex-wrap">
+          <div
+            className="flex justify-center gap-4 flex-wrap p-2"
+            onMouseLeave={() => setWomenDropdown(false)}
+          >
             {categories.length > 0 &&
               categories.map((category) => (
-                <h1 onClick={() => navigate(`/search/${category}`)}>
+                <h1
+                  onClick={() => navigate(`/search/${category}`)}
+                  className="hover:bg-stone-200 px-4 py-2 rounded-lg cursor-pointer"
+                >
                   {category.charAt(0).toUpperCase() + category.substring(1)}
                 </h1>
               ))}
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

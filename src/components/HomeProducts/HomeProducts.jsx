@@ -9,6 +9,7 @@ import { Autoplay, Grid, Navigation, Pagination } from "swiper/modules";
 import { headers } from "../../constants";
 import { Button } from "flowbite-react";
 import Footer from "../../pages/Footer";
+import { Link, useNavigate } from "react-router-dom";
 
 const HomeProducts = () => {
   const [shirt, setShirt] = useState([]);
@@ -16,6 +17,8 @@ const HomeProducts = () => {
   const [trouser, setTrouser] = useState([]);
   const [womenProducts, setWomenProducts] = useState([]);
   const [subscribe, setSubscribe] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts("tshirt");
@@ -71,7 +74,8 @@ const HomeProducts = () => {
             <img
               src="https://www.beyoung.in/api/catalog/homepage-3-10/T-shirt-section/new/9.jpg"
               alt=""
-              className="w-2/5 rounded-xl"
+              className="w-2/5 rounded-xl cursor-pointer"
+              onClick={() => navigate(`search/shirt`)}
             />
             <Swiper
               slidesPerView={3}
@@ -112,7 +116,9 @@ const HomeProducts = () => {
               {tshirt &&
                 tshirt.map((item, index) => (
                   <SwiperSlide key={index}>
-                    <img src={item.displayImage} className="rounded-xl" />
+                    <Link to={`/product/${item._id}`}>
+                      <img src={item.displayImage} className="rounded-xl" />
+                    </Link>
                   </SwiperSlide>
                 ))}
             </Swiper>
@@ -153,7 +159,9 @@ const HomeProducts = () => {
             {shirt &&
               shirt.map((item, index) => (
                 <SwiperSlide key={index}>
-                  <img src={item.displayImage} className="rounded-xl" />
+                  <Link to={`/product/${item._id}`}>
+                    <img src={item.displayImage} className="rounded-xl" />
+                  </Link>
                 </SwiperSlide>
               ))}
           </Swiper>
@@ -191,7 +199,9 @@ const HomeProducts = () => {
             {trouser &&
               trouser.map((item, index) => (
                 <SwiperSlide key={index}>
-                  <img src={item.displayImage} className="rounded-xl" />
+                  <Link to={`/product/${item._id}`}>
+                    <img src={item.displayImage} className="rounded-xl" />
+                  </Link>
                 </SwiperSlide>
               ))}
           </Swiper>
@@ -232,7 +242,9 @@ const HomeProducts = () => {
             {womenProducts &&
               womenProducts.map((item, index) => (
                 <SwiperSlide key={index}>
-                  <img src={item.displayImage} className="rounded-xl" />
+                  <Link to={`/product/${item._id}`}>
+                    <img src={item.displayImage} className="rounded-xl" />
+                  </Link>
                 </SwiperSlide>
               ))}
           </Swiper>

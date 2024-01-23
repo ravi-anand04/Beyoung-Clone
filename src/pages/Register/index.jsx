@@ -116,7 +116,7 @@ const Register = ({
                 shadow
                 onChange={(event) => setEmail(event.target.value)}
                 required
-                color={error.email ? "failure" : ""}
+                color={error.email ? "failure" : "gray"}
                 helperText={
                   error.email ? (
                     <>
@@ -135,7 +135,7 @@ const Register = ({
               <TextInput
                 id="name"
                 type="text"
-                color={error.name ? "failure" : ""}
+                color={error.name ? "failure" : "gray"}
                 helperText={
                   error.name ? (
                     <>
@@ -160,7 +160,7 @@ const Register = ({
                 shadow
                 required
                 onChange={(event) => setPassword(event.target.value)}
-                color={error.password ? "failure" : ""}
+                color={error.password ? "failure" : "gray"}
                 helperText={
                   error.password ? (
                     <>

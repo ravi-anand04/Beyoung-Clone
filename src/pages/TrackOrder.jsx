@@ -8,7 +8,9 @@ const TrackOrder = () => {
   const navigate = useNavigate("");
 
   useEffect(() => {
-    fetchOrders();
+    if (localStorage.getItem("beyoung_token")) {
+      fetchOrders();
+    }
   }, []);
 
   const fetchOrders = async () => {
@@ -41,7 +43,13 @@ const TrackOrder = () => {
   return (
     <div className="px-48 max-xl:px-12 max-sm:px-1 mt-12">
       <div className="flex flex-wrap justify-center">
-        {orders.length > 0 ? (
+        {!localStorage.getItem("beyoung_token") && (
+          <h1 className="text-3xl font-bold ">
+            You need to <span className="font-lg text-cyan-500">Login</span>{" "}
+            first!
+          </h1>
+        )}
+        {orders.length > 0 &&
           orders.map((order) => (
             <div
               key={order.createdAt}
@@ -90,10 +98,10 @@ const TrackOrder = () => {
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <div className="m-auto mt-16">
-            <h1 className=" text-3xl font-bold mb-8">No orders found.</h1>
+          ))}
+        {localStorage.getItem("beyoung_token") && orders.length == 0 && (
+          <div className={`m-auto mt-16`}>
+            <h1 className="text-3xl font-bold mb-8">No orders found.</h1>
             <Button
               size="sm"
               color="dark"
