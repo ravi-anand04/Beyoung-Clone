@@ -12,8 +12,14 @@ import { FaShoppingCart } from "react-icons/fa";
 import { IoArrowForwardCircleOutline } from "react-icons/io5";
 import { GiCash } from "react-icons/gi";
 import { FaShippingFast } from "react-icons/fa";
-import { IoIosHeartEmpty } from "react-icons/io";
-import { CART_ACTION, headers } from "../../constants";
+import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
+import {
+  ADD_TO_WISHLIST,
+  CART_ACTION,
+  DELETE_FROM_WISHLIST,
+  GET_MY_WISHLIST,
+  headers,
+} from "../../constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import sanitizeHtml from "sanitize-html";
@@ -23,6 +29,9 @@ const Product = () => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
+
+  const [existInWishlist, setExistInWishlist] = useState(false);
+  const token = localStorage.getItem("beyoung_token");
 
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
@@ -34,12 +43,98 @@ const Product = () => {
   // 652675cddaf00355a7838b67
   useEffect(() => {
     fetchProductById();
+    isExistInWishlist();
   }, []);
 
   const [openLoginModal, setLoginModal] = useState(false);
 
   const toggleLoginModel = () => {
     setLoginModal((prev) => !prev);
+  };
+
+  const isExistInWishlist = async () => {
+    const headers = {
+      "Content-Type": "application/json",
+      projectId: process.env.PROJECT_ID,
+      Authorization: `Bearer ${token}`,
+    };
+
+    const res = await fetch(GET_MY_WISHLIST, {
+      method: "GET",
+      headers,
+    });
+
+    const resJSON = await res.json();
+    console.log("Items", resJSON);
+    const exists = resJSON.data.items.find((item) => item.products._id === id);
+    console.log("Is exist ?", exists);
+    setExistInWishlist(exists ? true : false);
+    return exists;
+  };
+
+  const updateWishList = async (e) => {
+    e.stopPropagation();
+    if (!token) {
+      toast.error("You need to login first!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
+
+    const headers = {
+      "Content-Type": "application/json",
+      projectId: process.env.PROJECT_ID,
+      Authorization: `Bearer ${token}`,
+    };
+
+    if (await isExistInWishlist()) {
+      // console.log(isExistInWishlist());
+      const res = await fetch(`${DELETE_FROM_WISHLIST}/${id}`, {
+        method: "DELETE",
+        headers,
+      });
+      const resJSON = await res.json();
+      console.log("Removed from wishlist!");
+      toast.success("Removed from wishlist!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      setExistInWishlist(false);
+    } else {
+      const res = await fetch(ADD_TO_WISHLIST, {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ productId: id }),
+      });
+      console.log("Payload", JSON.stringify({ productId: id }));
+      const resJSON = await res.json();
+      console.log(resJSON);
+      console.log("Added to wishlist!");
+      toast.success("Product added to wishlist!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      setExistInWishlist(true);
+    }
   };
 
   const addToCart = async () => {
@@ -177,7 +272,16 @@ const Product = () => {
         <div className="w-1/2 prod-description max-md:w-full">
           <div className="flex justify-between items-center header mb-1">
             <h1 className="font-bold text-xl">{product.name}</h1>
-            <IoIosHeartEmpty size={22} />
+            <div
+              className="wishlist text-2xl cursor-pointer"
+              onClick={updateWishList}
+            >
+              {existInWishlist ? (
+                <IoIosHeart className="text-red-500 mt-2" />
+              ) : (
+                <IoIosHeartEmpty className="mt-2" />
+              )}
+            </div>
           </div>
           <div className="category text-md font-light mb-2">
             <p>

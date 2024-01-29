@@ -7,7 +7,7 @@ export const CART_ACTION = `${base_url}/api/v1/ecommerce/cart`;
 export const ADD_TO_ORDER = `${base_url}/api/v1/ecommerce/order`;
 export const ADD_TO_WISHLIST = `${base_url}/api/v1/ecommerce/wishlist`;
 export const GET_MY_WISHLIST = `${base_url}/api/v1/ecommerce/wishlist`;
-export const DELETE_FROM_WISHLIST = `${base_url}/api/v1/ecommerce/wishlist/{{productId}}`;
+export const DELETE_FROM_WISHLIST = `${base_url}/api/v1/ecommerce/wishlist`;
 export const CLEAR_WISHLIST = `${base_url}/api/v1/ecommerce/wishlist`;
 
 export const LOGIN_URL = `${base_url}/api/v1/user/login`;

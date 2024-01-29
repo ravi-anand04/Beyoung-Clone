@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import LoginFirst from "../../components/LoginFirst";
+import { IoTrashBinSharp } from "react-icons/io5";
 
 const Checkout = () => {
   const tabsRef = useRef(null);
@@ -201,6 +202,43 @@ const Checkout = () => {
     return true;
   };
 
+  const clearCart = async () => {
+    const headers = {
+      "Content-Type": "application/json",
+      projectId: process.env.PROJECT_ID,
+      Authorization: `Bearer ${localStorage.getItem("beyoung_token")}`,
+    };
+
+    const res = await fetch(`${CART_ACTION}`, {
+      method: "DELETE",
+      headers,
+    });
+
+    if (res.ok) {
+      window.location.reload();
+    }
+  };
+
+  const removeFromCart = async (item) => {
+    // console.log(item);
+    const headers = {
+      "Content-Type": "application/json",
+      projectId: process.env.PROJECT_ID,
+      Authorization: `Bearer ${localStorage.getItem("beyoung_token")}`,
+    };
+
+    const res = await fetch(`${CART_ACTION}/${item.product._id}`, {
+      method: "DELETE",
+      headers,
+    });
+
+    const resJSON = await res.json();
+
+    console.log(resJSON);
+
+    window.location.reload();
+  };
+
   return (
     <>
       {!token ? (
@@ -219,13 +257,14 @@ const Checkout = () => {
             pauseOnHover
             theme="dark"
           />
+
           {cartItems == [] || cartItems.totalPrice === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-2">
+            <div className="flex flex-col items-center justify-center">
               <img src="https://www.beyoung.in/desktop/images/checkout/EMPTY CARTORDER PAGE..png" />
               <Button
                 color="dark"
                 size="lg"
-                className="px-36"
+                className="px-36 mb-4"
                 onClick={() => navigate("/")}
               >
                 CONTINUE SHOPPING
@@ -250,6 +289,12 @@ const Checkout = () => {
                     <div className="flex max-lg:flex-col gap-6">
                       <div className="product border-stone-300 w-3/5 max-lg:w-full">
                         <div className="product flex flex-col max-md:items-center gap-4">
+                          <h1
+                            className="text-lg font-bold flex items-center gap-2 cursor-pointer"
+                            onClick={clearCart}
+                          >
+                            <IoTrashBinSharp /> Clear Cart
+                          </h1>
                           {cartItems.items.map((item) => (
                             <a
                               href="#"
@@ -303,13 +348,12 @@ const Checkout = () => {
                                   </div>
                                   <hr />
                                 </div>
-                                <div className="actions flex justify-between mt-6">
-                                  <span className="border-r-2 px-4 border-stone-300">
+                                <div className="actions flex justify-center mt-6">
+                                  <span
+                                    className="px-2 font-semibold cursor-pointer py-2 text-white text-center rounded-lg bg-rose-600 w-full"
+                                    onClick={() => removeFromCart(item)}
+                                  >
                                     Remove
-                                  </span>
-                                  <span className="px-4">
-                                    {" "}
-                                    Move To Wishlist
                                   </span>
                                 </div>
                               </div>

@@ -6,6 +6,7 @@ import ProductDetails from "../pages/Product/Product";
 import Checkout from "../pages/Checkout";
 import Navbar from "./Navbar";
 import TrackOrder from "../pages/TrackOrder";
+import Wishlist from "../pages/Wishlist";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/checkout/:id/:quantity/:size" element={<Checkout />} />
           <Route path="/track" element={<TrackOrder />} />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -26,8 +26,14 @@ const TrackOrder = () => {
     });
 
     const resJSON = await res.json();
+
+    const compareFn = (b, a) =>
+      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+
+    resJSON.data.sort(compareFn);
+
     setOrders(resJSON.data);
-    console.log("Order", resJSON);
+    console.log("Order", resJSON.data);
   };
 
   const convertDate = (inputDate) => {
@@ -60,7 +66,7 @@ const TrackOrder = () => {
                   {order.order.items[0].product.name}
                 </div>
                 <p className="text-gray-700 mt-4">
-                  <b>Total Price:</b> {order.order.items[0].product.price}
+                  <b>Total Price: </b>Rs. {order.order.items[0].product.price}
                 </p>
                 <p className="text-gray-700 mt-2">
                   <b>Order ID:</b> {order.order.items[0].product._id}

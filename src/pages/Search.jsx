@@ -16,17 +16,18 @@ const Search = () => {
   const [hasMore, setHasMore] = useState(true);
 
   const [selectedFilters, setSelectedFilters] = useState({
-    color: [],
-    size: [],
+    color: "",
+    size: "",
+    sort: "",
   });
 
   const [clear, setClear] = useState(false);
 
   useEffect(() => {
     searchProducts();
-  }, [page, selectedFilters]);
+  }, [page]);
 
-  useEffect(() => {}, [products]);
+  // useEffect(() => {}, [products]);
 
   const searchProducts = async () => {
     const userFilters = removeFalsyValues(selectedFilters);
@@ -66,11 +67,7 @@ const Search = () => {
     setClear(true);
     const updatedFilters = {
       ...selectedFilters,
-      [type]: selectedFilters[type].find(
-        (filter) => filter === value.toUpperCase()
-      )
-        ? [...selectedFilters[type]]
-        : [...selectedFilters[type], value.toUpperCase()],
+      [type]: value,
     };
 
     console.log("Updated ------------", updatedFilters);
@@ -97,25 +94,27 @@ const Search = () => {
     console.log("Filtered", resJSON.data);
 
     const updatedProducts = [...resJSON.data];
-
-    setProducts(updatedProducts);
+    // setProducts(() => []);
+    setProducts(() => updatedProducts);
     setLoader(false);
   };
 
   const sortProducts = (order) => {
     if (order == "low") {
+      console.log("Mil gaya!");
       const compareFn = (b, a) => b.price - a.price;
-      const sortedProducts = products.sort(compareFn);
-      setProducts((prev) => sortedProducts);
+      const sortedProducts = [...products].sort(compareFn);
+      setProducts(() => sortedProducts);
     } else {
       const compareFn = (b, a) => a.price - b.price;
-      const sortedProducts = products.sort(compareFn);
-      setProducts((prev) => sortedProducts);
+      const sortedProducts = [...products].sort(compareFn);
+      setProducts(() => sortedProducts);
     }
   };
 
   const clearFilter = () => {
-    setSelectedFilters({ color: [], size: [] });
+    // setSelectedFilters({ color: "", size: "", sort: "" });
+    window.location.reload();
     setClear(false);
   };
 
@@ -130,29 +129,34 @@ const Search = () => {
         <div>
           <h1 className="font-bold text-2xl my-5">FILTERS</h1>
           <div className="flex gap-4 main max-md:flex-col">
-            <div className="filters w-1/4 max-lg:w-1/2 max-md:w-full ">
-              <div className="selected-filters mb-4 flex flex-col gap-4 flex-wrap">
+            <div className="filters w-1/4 max-lg:w-1/2 max-md:w-full">
+              <div className="selected-filters mb-4 flex items-center gap-4 flex-wrap">
                 <div className="filtered-colors flex flex-wrap gap-2">
-                  {selectedFilters.color.map((color) => (
-                    <Button size="sm" color={color && color.toLowerCase()} pill>
-                      {color}
+                  {selectedFilters.color && (
+                    <Button
+                      size="sm"
+                      color={
+                        selectedFilters.color &&
+                        selectedFilters.color.toLowerCase()
+                      }
+                    >
+                      {selectedFilters.color}
                     </Button>
-                  ))}
+                  )}
                 </div>
                 <div className="filtered-sizes flex flex-wrap gap-2">
-                  {selectedFilters.size.map((size) => (
-                    <Button size="sm" color="dark" pill>
-                      {size}
+                  {selectedFilters.size && (
+                    <Button size="sm" color="dark">
+                      {selectedFilters.size}
                     </Button>
-                  ))}
+                  )}
                 </div>
 
                 {clear && (
                   <Button
                     size="sm"
+                    className="w-1/2"
                     gradientMonochrome="failure"
-                    pill
-                    className="w-1/3"
                     onClick={clearFilter}
                   >
                     Clear filter
@@ -166,7 +170,7 @@ const Search = () => {
                     <div className="flex flex-wrap gap-2">
                       <Button
                         size="sm"
-                        onClick={() => filterProducts("color", "blue")}
+                        onClick={() => filterProducts("color", "BLUE")}
                         color="blue"
                         pill
                       >
@@ -174,7 +178,7 @@ const Search = () => {
                       </Button>
                       <Button
                         size="sm"
-                        onClick={() => filterProducts("color", "yellow")}
+                        onClick={() => filterProducts("color", "YELLOW")}
                         color="warning"
                         pill
                       >
@@ -182,7 +186,7 @@ const Search = () => {
                       </Button>
                       <Button
                         size="sm"
-                        onClick={() => filterProducts("color", "green")}
+                        onClick={() => filterProducts("color", "GREEN")}
                         color="success"
                         pill
                       >
@@ -190,7 +194,7 @@ const Search = () => {
                       </Button>
                       <Button
                         size="sm"
-                        onClick={() => filterProducts("color", "black")}
+                        onClick={() => filterProducts("color", "BLACK")}
                         color="dark"
                         pill
                       >
@@ -198,7 +202,7 @@ const Search = () => {
                       </Button>
                       <Button
                         size="sm"
-                        onClick={() => filterProducts("color", "purple")}
+                        onClick={() => filterProducts("color", "PURPLE")}
                         color="purple"
                         pill
                       >

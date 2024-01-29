@@ -3,7 +3,7 @@ import BeyoungLogo from "../assets/icons/BeyoungLogo";
 import { IoIosHeartEmpty, IoIosSearch } from "react-icons/io";
 import { SlLocationPin } from "react-icons/sl";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { CATEGORIES } from "../constants";
+import { CART_ACTION, CATEGORIES } from "../constants";
 import { Button, Dropdown } from "flowbite-react";
 import Input from "./Input";
 import Login from "../pages/Login";
@@ -17,6 +17,7 @@ const Navbar = () => {
   const [menDropdown, setMenDropdown] = useState(false);
   const [womenDropdown, setWomenDropdown] = useState(false);
   const [name, setName] = useState("");
+  const [cartLength, setCartLength] = useState(0);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -25,7 +26,25 @@ const Navbar = () => {
   useEffect(() => {
     fetchCategories();
     setIsLoggedIn(!!localStorage.getItem("beyoung_token"));
+    if (localStorage.getItem("beyoung_token")) {
+      fetchCartQuantity();
+    }
   }, []);
+
+  const fetchCartQuantity = async () => {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("beyoung_token")}`,
+      projectID: process.env.PROJECT_ID,
+    };
+
+    const res = await fetch(CART_ACTION, { method: "GET", headers });
+
+    if (res.ok) {
+      const resJSON = await res.json();
+      console.log("Cart length", resJSON.data.items.length);
+      setCartLength(resJSON.data.items.length);
+    }
+  };
 
   useEffect(() => {}, [name]);
 
@@ -150,12 +169,6 @@ const Navbar = () => {
           >
             SHOP BY CATEGORY
           </h1>
-          {/* <h1
-            className="hover:bg-yellow-100 p-4 font-semibold"
-            onMouseEnter={() => handleHover("women")}
-          >
-            WOMEN
-          </h1> */}
         </ul>
 
         <div className="flex items-center gap-5">
@@ -167,12 +180,24 @@ const Navbar = () => {
           >
             <IoIosSearch size={22} />
           </div>
-          <div className="wishlist cursor-pointer">
+          <div
+            className="wishlist cursor-pointer"
+            onClick={() => navigate("/wishlist")}
+          >
             <IoIosHeartEmpty size={22} />
           </div>
-          <div className="cart cursor-pointer" onClick={redirectToCart}>
-            <AiOutlineShoppingCart size={22} />
-          </div>
+          <button
+            type="button"
+            className="relative inline-flex items-center text-sm font-medium text-center text-black rounded-lg"
+          >
+            <div className="cart cursor-pointer" onClick={redirectToCart}>
+              <AiOutlineShoppingCart size={22} />
+            </div>
+            <span className="sr-only">Notifications</span>
+            <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-3 -end-2 dark:border-gray-900">
+              {cartLength}
+            </div>
+          </button>
         </div>
       </div>
 
@@ -181,7 +206,7 @@ const Navbar = () => {
       </div>
 
       <div
-        className="px-48 max-lg:px-12 max-sm:px-1 men"
+        className="px-48 max-lg:px-12 max-sm:px-1 men bg-white"
         onMouseLeave={() => setMenDropdown(false)}
       >
         {menDropdown && (
@@ -201,24 +226,6 @@ const Navbar = () => {
           </div>
         )}
       </div>
-      {/* <div className="px-48 max-lg:px-12 max-sm:px-1 women">
-        {womenDropdown && (
-          <div
-            className="flex justify-center gap-4 flex-wrap p-2"
-            onMouseLeave={() => setWomenDropdown(false)}
-          >
-            {categories.length > 0 &&
-              categories.map((category) => (
-                <h1
-                  onClick={() => navigate(`/search/${category}`)}
-                  className="hover:bg-stone-200 px-4 py-2 rounded-lg cursor-pointer"
-                >
-                  {category.charAt(0).toUpperCase() + category.substring(1)}
-                </h1>
-              ))}
-          </div>
-        )}
-      </div> */}
     </div>
   );
 };
