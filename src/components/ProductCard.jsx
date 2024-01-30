@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
         setImageUrl("https://placehold.co/600x600?text=Image+Not+Found");
       }
     };
-    imageCheck();
+    // imageCheck();
     isExistInWishlist();
   }, []);
 
@@ -147,7 +147,7 @@ const ProductCard = ({ product }) => {
       />
       <div className="w-[280px] h-[500px] overflow-hidden bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <a href="#">
-          <img className="rounded-t-lg object-contain" src={imageUrl} />
+          <img className="rounded-t-lg object-contain" src={displayImage} />
         </a>
         <div className="p-5">
           <div className="head flex gap-4 justify-between items-start">
