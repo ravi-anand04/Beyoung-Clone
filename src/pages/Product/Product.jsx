@@ -36,6 +36,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
   const [selected, setSelected] = useState("");
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const navigate = useNavigate("");
 
@@ -181,6 +182,8 @@ const Product = () => {
       return;
     }
     console.log(resJSON);
+
+    setAddedToCart(true);
 
     toast.success("Added to Cart", {
       position: "top-right",
@@ -349,13 +352,20 @@ const Product = () => {
               </select>
             </div>
             <div className="actions flex max-md:flex-col  gap-2 justify-between mb-8">
-              <Button className="py-1 rounded-md w-2/5 max-md:w-full bg-cyan-400">
+              <Button
+                className={` ${
+                  addedToCart ? "hidden" : "block"
+                } py-1 rounded-md w-2/5 max-md:w-full bg-cyan-400`}
+              >
                 <b className="text-xl mr-2">
                   <FaShoppingCart />
                 </b>
-                <span className="text-lg" onClick={addToCart}>
-                  {" "}
-                  ADD TO CART
+                <span
+                  className="text-lg"
+                  onClick={addToCart}
+                  disabled={addedToCart}
+                >
+                  {!addedToCart ? "ADD TO CART" : <span>Added to cart</span>}
                 </span>
               </Button>
               <Button className="py-1 rounded-md w-3/5 max-md:w-full bg-yellow-300">
