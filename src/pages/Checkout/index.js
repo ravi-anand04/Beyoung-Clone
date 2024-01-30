@@ -416,21 +416,25 @@ const Checkout = () => {
                   >
                     <div className="flex max-md:flex-col gap-6">
                       <div className="address w-3/5 max-md:w-full">
-                        <div className="login-check text-center flex gap-4 justify-center items-center">
-                          <span>Already have an account?</span>
-                          <Button
-                            color="gray"
-                            className="border-2 rounded-sm border-cyan-500 text-cyan-500 px-2"
-                            size="xs"
-                            onClick={() => navigate(`/`)}
-                          >
-                            Login/Signup
-                          </Button>
-                        </div>
-                        <h1 className="flex justify-center">Or</h1>
-                        <h1 className="flex justify-center mb-2">
-                          Checkout as Guest
-                        </h1>
+                        {!token && (
+                          <div className="without-login">
+                            <div className="login-check text-center flex gap-4 justify-center items-center">
+                              <span>Already have an account?</span>
+                              <Button
+                                color="gray"
+                                className="border-2 rounded-sm border-cyan-500 text-cyan-500 px-2"
+                                size="xs"
+                                onClick={() => navigate(`/`)}
+                              >
+                                Login/Signup
+                              </Button>
+                            </div>
+                            <h1 className="flex justify-center">Or</h1>
+                            <h1 className="flex justify-center mb-2">
+                              Checkout as Guest
+                            </h1>
+                          </div>
+                        )}
                         <div className="delivery-address">
                           <AddressForm
                             address={address}
@@ -707,21 +711,25 @@ const Checkout = () => {
                 >
                   <div className="flex max-md:flex-col gap-6">
                     <div className="address w-3/5 max-md:w-full">
-                      <div className="login-check text-center flex gap-4 justify-center items-center">
-                        <span>Already have an account?</span>
-                        <Button
-                          color="gray"
-                          className="border-2 rounded-sm border-cyan-500 text-cyan-500 px-2"
-                          size="xs"
-                          onClick={() => navigate(`/`)}
-                        >
-                          Login/Signup
-                        </Button>
-                      </div>
-                      <h1 className="flex justify-center">Or</h1>
-                      <h1 className="flex justify-center mb-2">
-                        Checkout as Guest
-                      </h1>
+                      {!token && (
+                        <div className="without-login">
+                          <div className="login-check text-center flex gap-4 justify-center items-center">
+                            <span>Already have an account?</span>
+                            <Button
+                              color="gray"
+                              className="border-2 rounded-sm border-cyan-500 text-cyan-500 px-2"
+                              size="xs"
+                              onClick={() => navigate(`/`)}
+                            >
+                              Login/Signup
+                            </Button>
+                          </div>
+                          <h1 className="flex justify-center">Or</h1>
+                          <h1 className="flex justify-center mb-2">
+                            Checkout as Guest
+                          </h1>
+                        </div>
+                      )}
                       <div className="delivery-address">
                         <AddressForm
                           address={address}
