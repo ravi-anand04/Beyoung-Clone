@@ -164,6 +164,8 @@ const Checkout = () => {
         theme: "dark",
       });
 
+      clearCart();
+
       setTimeout(() => {
         navigate("/track");
       }, 4000);
@@ -209,6 +211,8 @@ const Checkout = () => {
     setTimeout(() => {
       navigate("/track");
     }, 4000);
+
+    clearCart();
   };
 
   const shippingCheckout = () => {

@@ -183,7 +183,7 @@ const Product = () => {
     }
     console.log(resJSON);
 
-    setAddedToCart(true);
+    // setAddedToCart(true);
 
     toast.success("Added to Cart", {
       position: "top-right",
@@ -195,6 +195,10 @@ const Product = () => {
       progress: undefined,
       theme: "dark",
     });
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   const buyNow = () => {
