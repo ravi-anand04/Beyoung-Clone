@@ -59,31 +59,18 @@ const AddressForm = ({ address, setAddress }) => {
           <input
             className="border-1 w-full rounded-md border-stone-300 font-light"
             type="text"
-            placeholder="PIN Code"
-            value={address.pin}
+            placeholder="Street"
+            value={address.street}
             onChange={(e) =>
               setAddress((prev) => {
-                return { ...prev, pin: e.target.value };
+                return { ...prev, street: e.target.value };
               })
             }
           />
           <input
             className="border-1 w-full rounded-md border-stone-300 font-light"
             type="text"
-            placeholder="Town/Village"
-            value={address.town}
-            onChange={(e) =>
-              setAddress((prev) => {
-                return { ...prev, town: e.target.value };
-              })
-            }
-          />
-        </div>
-        <div className="flex justify-between gap-3">
-          <input
-            className="border-1 w-full rounded-md border-stone-300 font-light"
-            type="text"
-            placeholder="City/District"
+            placeholder="City"
             value={address.city}
             onChange={(e) =>
               setAddress((prev) => {
@@ -91,8 +78,12 @@ const AddressForm = ({ address, setAddress }) => {
               })
             }
           />
+        </div>
+        <div className="flex justify-between gap-3">
           <input
-            className="border-1 w-full rounded-md border-stone-300 font-light"
+            className={`border-1 w-full rounded-md ${
+              !address.state ? "border-red-600" : "border-stone-300"
+            } font-light`}
             type="text"
             placeholder="State"
             value={address.state}
@@ -102,16 +93,31 @@ const AddressForm = ({ address, setAddress }) => {
               })
             }
           />
-        </div>
-        <div className="flex justify-between">
           <input
-            className="w-full rounded-md border-stone-300 font-light"
+            className={`border-1 w-full rounded-md ${
+              !address.country ? "border-red-600" : "border-stone-300"
+            } font-light`}
             type="text"
-            placeholder="Address (House No., Building, Street, Area)"
-            value={address.address}
+            placeholder="Country"
+            value={address.country}
             onChange={(e) =>
               setAddress((prev) => {
-                return { ...prev, fullAddress: e.target.value };
+                return { ...prev, country: e.target.value };
+              })
+            }
+          />
+        </div>
+        <div className="flex justify-between m-auto">
+          <input
+            className={`w-full ${
+              !address.zipCode ? "border-red-600" : "border-stone-300"
+            } rounded-md  font-light`}
+            type="text"
+            placeholder="Zipcode"
+            value={address.zipCode}
+            onChange={(e) =>
+              setAddress((prev) => {
+                return { ...prev, zipCode: e.target.value };
               })
             }
           />

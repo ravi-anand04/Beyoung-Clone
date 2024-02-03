@@ -418,7 +418,6 @@ const Product = () => {
           </a>
         </div>
       </div>
-      <div className="reviews"></div>
     </div>
   );
 };

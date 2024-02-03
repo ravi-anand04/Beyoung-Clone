@@ -28,16 +28,28 @@ const Checkout = () => {
     paymentDisabled: true,
   });
 
+  // const [address, setAddress] = useState({
+  //   fname: "",
+  //   lname: "",
+  //   email: "",
+  //   phone: "",
+  //   pin: "",
+  //   town: "",
+  //   city: "",
+  //   state: "",
+  //   fullAddress: "",
+  // });
+
   const [address, setAddress] = useState({
     fname: "",
     lname: "",
     email: "",
-    phone: 0,
-    pin: 0,
-    town: "",
+    phone: "",
+    street: "",
     city: "",
     state: "",
-    fullAddress: "",
+    country: "",
+    zipCode: "",
   });
 
   const navigate = useNavigate();
@@ -113,7 +125,7 @@ const Checkout = () => {
 
   const finalCartCheckout = async () => {
     const { street, city, state, country, zipCode } = address;
-
+    console.log("Address fully", address);
     console.log("Item carts", cartItems);
 
     cartItems.items.forEach(async (cartItem) => {
@@ -124,11 +136,11 @@ const Checkout = () => {
         quantity: cartItem.quantity,
         addressType: "HOME",
         address: {
-          street: "123 Main St",
-          city: "Anytown",
-          state: "CA",
-          country: "USA",
-          zipCode: "12345",
+          street,
+          city,
+          state,
+          country,
+          zipCode,
         },
       });
 
@@ -141,6 +153,20 @@ const Checkout = () => {
       });
       const resJSON = await res.json();
       console.log("pRODUCT ordered", resJSON);
+      toast.success("Payment Successful. Redirecting to orders page!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+
+      setTimeout(() => {
+        navigate("/track");
+      }, 4000);
     });
   };
 
@@ -169,22 +195,45 @@ const Checkout = () => {
     const resJSON = await res.json();
 
     console.log("Order", resJSON);
+    toast.success("Payment Successful. Redirecting to orders page!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+
+    setTimeout(() => {
+      navigate("/track");
+    }, 4000);
   };
 
   const shippingCheckout = () => {
-    const { lname, fname, phone, town, city, state, email, pin, fullAddress } =
-      address;
+    const {
+      lname,
+      fname,
+      phone,
+      email,
+      street,
+      city,
+      state,
+      country,
+      zipCode,
+    } = address;
 
     if (
       !fname ||
       !lname ||
       !phone ||
       !email ||
-      !town ||
+      !street ||
       !city ||
       !state ||
-      !pin ||
-      !fullAddress
+      !country ||
+      !zipCode
     ) {
       toast.error("Invalid address", {
         position: "top-right",
